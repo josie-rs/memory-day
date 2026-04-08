@@ -34,6 +34,7 @@
 - [ ] 已写明 **macOS-only**
 - [ ] 已写明依赖 Photos.app / Photos.sqlite / AppleScript / `sips`
 - [ ] 已写明不包含推送、调度和私有数据
+- [ ] 已写明不内置推送通道，用户可自行接入飞书、企业微信、钉钉、Telegram、邮件或自定义 webhook
 - [ ] 已写明配置方式与 CLI 用法
 
 ## 四、功能冒烟测试

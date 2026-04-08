@@ -29,6 +29,32 @@ It does **not** include:
 - private `config.py`
 - real personal `memory_library.json` data
 
+## Delivery integrations
+
+This project does not ship with any built-in delivery channel.
+
+It focuses on generating local “On This Day” memory payloads only.
+You can connect the generated payload to your own delivery system, such as Feishu, WeCom, DingTalk, Telegram, email, or a custom webhook.
+
+In other words, the repository is intentionally delivery-agnostic: you are free to choose the messaging or notification channel that fits your workflow.
+
+### How to integrate your own channel
+
+The easiest way is to keep `memory-day` responsible for payload generation only, and add a thin delivery adapter in your own project.
+
+A typical integration flow looks like this:
+
+1. call `memory_day.service.get_daily_memory_payload()`
+2. read `title`, `text`, and `image_path` from the returned payload
+3. upload or attach the local image if your channel supports images
+4. send the message through your own provider
+
+Different channels require different configuration. Some only need a webhook URL, while others may require app credentials, bot tokens, chat IDs, SMTP settings, or media upload steps.
+
+For that reason, this repository does not try to standardize delivery configuration into a single universal API key. In most cases, it is better to choose one channel that fits your workflow and wire it up in your own script or application layer.
+
+If you want the lowest-friction starting point, begin with a simple webhook-based integration or a Feishu bot integration first.
+
 ## Platform constraints
 
 This project is **macOS-only** and depends on:
@@ -129,14 +155,14 @@ python3 -m memory_day.cli add-entry --date 2026-04-07 --entry-json '{"photo_id":
 {
   "04-07": [
     {
-      "photo_id": "B53B2EFF-97D7-4784-939F-E16AE540E76D",
-      "filename": "IMG_1327.jpeg",
+      "photo_id": "EXAMPLE-PHOTO-ID-001",
+      "filename": "example-photo.jpg",
       "year": 2018,
       "description": "A person standing in front of a large window with a blue-sky silhouette.",
       "title": "On this day 8 years ago",
       "text": "On this day in 2018, you stood in front of a huge window...",
       "capture_time": "2018-04-07 22:31",
-      "capture_location": "Tianjin - Binhai Library"
+      "capture_location": "Example City - Example Place"
     }
   ]
 }
