@@ -47,7 +47,40 @@ python3 -m memory_day.cli prepare-date --date 2026-04-07 --top-n 4
 - [ ] 编译通过
 - [ ] CLI 可运行
 
-## 五、最低发布标准
+## 五、验证记录（2026-04-08）
+
+本次做过一轮**不连接真实 Photos.sqlite / 不使用真实照片库**的最小可运行验证，验证方式为：
+
+- 临时创建本地 `config.py`
+- 临时创建本地 `content/memory_library.json`
+- 将 `PHOTOS_DB_PATH` 指向不存在的测试路径
+- 仅验证 CLI 启动、内容库读写和失败路径是否可控
+
+已验证通过：
+
+- `python3 -m py_compile memory_day/__init__.py memory_day/service.py memory_day/photos.py memory_day/library.py memory_day/cli.py`
+- `python3 -m memory_day.cli add-entry --date 2026-04-07 --entry-json ...`
+- `python3 -m memory_day.cli cleanup-image --image-path ...`
+- `python3 -m memory_day.cli get-capture-time --photo-id TEST-PHOTO-001`
+- `python3 -m memory_day.cli get-daily-payload --date 2026-04-07`
+
+验证结论：
+
+- CLI 可正常启动
+- 本地配置读取正常
+- 内容库读写正常
+- 在无真实照片库 / 无有效照片 ID 时，失败路径可控，不会直接崩溃
+
+本次未验证：
+
+- 真实 Photos.app / Photos.sqlite 联调
+- 真实照片发现与导出
+- 真实拍摄时间 / 地点读取
+- 基于真实照片的完整 payload 生成
+
+验证结束后，临时创建的 `config.py` 与 `content/memory_library.json` 已清理完成。
+
+## 六、最低发布标准
 
 - [ ] 没有真实密钥
 - [ ] 没有真实个人数据
