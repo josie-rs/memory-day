@@ -298,6 +298,7 @@ def discover_photos_for_date(month: int, day: int, top_n: int = 0) -> List[Dict]
 
 def export_photo(photo_id: str) -> Optional[str]:
     os.makedirs(EXPORT_DIR, exist_ok=True)
+    existing_files = set(os.listdir(EXPORT_DIR))
     script = f'''
 tell application "Photos"
     set targetFolder to POSIX file "{EXPORT_DIR}" as alias
@@ -318,12 +319,31 @@ end tell
             return None
         fname = result.stdout.strip()
         base_name = os.path.splitext(fname)[0]
-        for file_name in os.listdir(EXPORT_DIR):
-            if file_name.startswith(base_name):
+
+        current_files = sorted(os.listdir(EXPORT_DIR))
+        new_files = [file_name for file_name in current_files if file_name not in existing_files]
+        for file_name in new_files:
+            if file_name == fname or file_name.startswith(f"{base_name} ("):
                 exported_path = str(EXPORT_DIR / file_name)
                 logger.info(f"照片导出成功: {exported_path}")
                 return exported_path
-        logger.error(f"导出后未找到文件: {base_name}")
+
+        exact_path = EXPORT_DIR / fname
+        if exact_path.exists():
+            exported_path = str(exact_path)
+            logger.info(f"照片导出成功: {exported_path}")
+            return exported_path
+
+        fallback_matches = [
+            file_name for file_name in current_files
+            if file_name == fname or file_name.startswith(f"{base_name} (")
+        ]
+        if fallback_matches:
+            exported_path = str(EXPORT_DIR / sorted(fallback_matches)[-1])
+            logger.warning(f"照片导出回退匹配: {exported_path}")
+            return exported_path
+
+        logger.error(f"导出后未找到文件: {fname}")
         return None
     except subprocess.TimeoutExpired:
         logger.error("照片导出超时")

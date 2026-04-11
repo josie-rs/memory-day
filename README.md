@@ -2,11 +2,10 @@
 
 ![Platform](https://img.shields.io/badge/platform-macOS-black)
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![Status](https://img.shields.io/badge/status-initial_public_skeleton-orange)
 
 Build “On This Day” memory payloads from your local macOS Photos library.
 
-> Uses Photos.app, Photos.sqlite, AppleScript, and `sips`.
+> Uses Photos.app, Photos.sqlite, and AppleScript.
 
 ## What this project is
 
@@ -62,7 +61,6 @@ This project is **macOS-only** and depends on:
 - Photos.app
 - Photos.sqlite
 - AppleScript (`osascript`)
-- `sips`
 
 If you are not on macOS, or you do not have a local Photos library, this project will not work as-is.
 
@@ -82,7 +80,6 @@ memory-day/
 ├── .gitignore
 ├── LICENSE
 ├── requirements.txt
-├── RELEASE_CHECKLIST.md
 └── README.md
 ```
 
@@ -156,13 +153,13 @@ python3 -m memory_day.cli add-entry --date 2026-04-07 --entry-json '{"photo_id":
   "04-07": [
     {
       "photo_id": "EXAMPLE-PHOTO-ID-001",
-      "filename": "example-photo.jpg",
-      "year": 2018,
-      "description": "A person standing in front of a large window with a blue-sky silhouette.",
-      "title": "On this day 8 years ago",
-      "text": "On this day in 2018, you stood in front of a huge window...",
-      "capture_time": "2018-04-07 22:31",
-      "capture_location": "Example City - Example Place"
+      "filename": "IMG_0001.jpeg",
+      "year": 2020,
+      "description": "A cat sleeping on a sunny windowsill next to a potted plant.",
+      "title": "On this day 6 years ago",
+      "text": "A lazy afternoon in 2020 — your cat claimed the best sunlit spot in the house.",
+      "capture_time": "2020-04-07 14:23",
+      "capture_location": "Home"
     }
   ]
 }
@@ -191,8 +188,6 @@ Do not commit the following:
 - exported personal photos
 - local logs
 - local state files
-
-Before publishing, run through `RELEASE_CHECKLIST.md`.
 
 ## License
 
